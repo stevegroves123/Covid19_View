@@ -47,11 +47,18 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List (records, id: \.cases) {covid in
-                Text("\(covid.countriesAndTerritories) \(covid.dateRep) Cases:\(covid.cases) Deaths:\(covid.deaths)")
+                Text("\(covid.dateRep)")
+                Text(" Cases:\(covid.cases)")
+                if Int(covid.deaths)! > 1000 {
+                    Text(" Deaths:\(covid.deaths)").foregroundColor(.red)
+                } else {
+                    Text(" Deaths:\(covid.deaths)")
                 }
+                }.navigationBarTitle("United Kingdom")
             }
-        .onAppear(perform: loadData)
+    .onAppear(perform: loadData)
     }
+    
     
 
     func loadData() {
