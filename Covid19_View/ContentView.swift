@@ -51,11 +51,15 @@ struct ContentView: View {
                 Text(" Cases:\(covid.cases)")
                 if Int(covid.deaths)! > 1000 {
                     Text(" Deaths:\(covid.deaths)").foregroundColor(.red)
+                } else if Int(covid.deaths)! > 500 && Int(covid.deaths)! < 1000 {
+                    Text(" Deaths:\(covid.deaths)").foregroundColor(.orange)
+                } else if Int(covid.deaths)! >= 0 && Int(covid.deaths)! < 201{
+                    Text(" Deaths:\(covid.deaths)").foregroundColor(.green)
                 } else {
                     Text(" Deaths:\(covid.deaths)")
                 }
-                }.navigationBarTitle("United Kingdom")
-            }
+            }.navigationBarTitle("United Kingdom")
+        }
     .onAppear(perform: loadData)
     }
     
