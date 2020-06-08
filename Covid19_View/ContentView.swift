@@ -42,25 +42,35 @@ struct Record: Codable {
 }
 
 struct ContentView: View {
+    var countries = ["Select", "Australia", "Belgium", "United_Kingdom", "United_States_of_America", "New_Zealand"]
+    @State var selectedCountry: Int = 0
     @State var records = [Record]()
     
     var body: some View {
         NavigationView {
-            List (records, id: \.cases) {covid in
+            Form {
+                Picker(selection: $selectedCountry, label: Text("Choose Country")) {
+                    ForEach(0..<countries.count) {
+                        Text(self.countries[$0])
+                    }
+                }
+//            }
+            List (records.filter({covid in covid.countriesAndTerritories == self.countries[self.selectedCountry]}), id: \.cases) {covid in
                 Text("\(covid.dateRep)")
                 Text(" Cases:\(covid.cases)")
                 if Int(covid.deaths)! > 1000 {
                     Text(" Deaths:\(covid.deaths)").foregroundColor(.red)
-                } else if Int(covid.deaths)! > 500 && Int(covid.deaths)! < 1000 {
+                } else if Int(covid.deaths)! >= 500 && Int(covid.deaths)! < 1000 {
                     Text(" Deaths:\(covid.deaths)").foregroundColor(.orange)
                 } else if Int(covid.deaths)! >= 0 && Int(covid.deaths)! < 201{
                     Text(" Deaths:\(covid.deaths)").foregroundColor(.green)
                 } else {
                     Text(" Deaths:\(covid.deaths)")
                 }
-            }.navigationBarTitle("United Kingdom")
+                }.navigationBarTitle("Covid-19 Cases")
+            }
         }
-    .onAppear(perform: loadData)
+        .onAppear(perform: loadData)
     }
     
     
@@ -77,12 +87,18 @@ struct ContentView: View {
             if let data = data {
                 if let decodedResponse = try? JSONDecoder().decode(CovidData.self, from: data) {
                     DispatchQueue.main.async {
-                        self.records = decodedResponse.records.filter({covid in covid.countriesAndTerritories == "United_Kingdom"})
+                        self.records = decodedResponse.records
                     }
                     return
                 }
             }
         }.resume()
+    }
+}
+
+struct listHeader: View {
+    var body: some View {
+        Text("Chosen Country")
     }
 }
 
