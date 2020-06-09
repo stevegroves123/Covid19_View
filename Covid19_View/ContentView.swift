@@ -67,8 +67,8 @@ struct ContentView: View {
                 } else {
                     Text(" Deaths:\(covid.deaths)")
                     }
+                }
             }.navigationBarTitle("Covid19: \(self.countries[self.selectedCountry].replacingOccurrences(of: "_", with: " "))")
-            }
         }
         .onAppear(perform: loadData)
     }
