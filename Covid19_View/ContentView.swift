@@ -43,7 +43,7 @@ struct Record: Codable {
 }
 
 struct ContentView: View {
-    let countries = ["Select", "Australia", "Belgium", "United_Kingdom", "United_States_of_America", "New_Zealand"]
+    let countries = ["Select", "Australia", "Belgium", "Brazil", "Canada", "United_Kingdom", "United_States_of_America", "New_Zealand"]
     @State var selectedCountry: Int = 0
     @State var records = [Record]()
     
@@ -67,7 +67,7 @@ struct ContentView: View {
                 } else {
                     Text(" Deaths:\(covid.deaths)")
                     }
-                }.navigationBarTitle("Covid-19 Cases")
+            }.navigationBarTitle("Covid19: \(self.countries[self.selectedCountry].replacingOccurrences(of: "_", with: " "))")
             }
         }
         .onAppear(perform: loadData)
