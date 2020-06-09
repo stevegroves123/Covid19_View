@@ -14,13 +14,14 @@ struct CovidData: Codable, Identifiable {
 }
 
 struct Record: Codable {
+    let id = UUID()
     let dateRep: String
     let day: String
     let month: String
     let year: String
-    let cases: String
+    let cases: String?
     let deaths: String
-    var countriesAndTerritories: String
+    let countriesAndTerritories: String
     let geoId: String
     let countryterritoryCode: String
     let popData2018: String
@@ -42,39 +43,36 @@ struct Record: Codable {
 }
 
 struct ContentView: View {
-    var countries = ["Select", "Australia", "Belgium", "United_Kingdom", "United_States_of_America", "New_Zealand"]
+    let countries = ["Select", "Australia", "Belgium", "United_Kingdom", "United_States_of_America", "New_Zealand"]
     @State var selectedCountry: Int = 0
     @State var records = [Record]()
     
     var body: some View {
         NavigationView {
             Form {
-                Picker(selection: $selectedCountry, label: Text("Choose Country")) {
+                Picker(selection: $selectedCountry, label: Text("Country:").font(.headline)) {
                     ForEach(0..<countries.count) {
                         Text(self.countries[$0])
                     }
                 }
-//            }
-            List (records.filter({covid in covid.countriesAndTerritories == self.countries[self.selectedCountry]}), id: \.cases) {covid in
+            List (records.filter({covid in covid.countriesAndTerritories == self.countries[self.selectedCountry]}), id: \.id) {covid in
                 Text("\(covid.dateRep)")
-                Text(" Cases:\(covid.cases)")
+                Text(" Cases:\(covid.cases ?? "0")")
                 if Int(covid.deaths)! > 1000 {
-                    Text(" Deaths:\(covid.deaths)").foregroundColor(.red)
+                    Text(" Deaths:\(covid.deaths )").foregroundColor(.red)
                 } else if Int(covid.deaths)! >= 500 && Int(covid.deaths)! < 1000 {
-                    Text(" Deaths:\(covid.deaths)").foregroundColor(.orange)
-                } else if Int(covid.deaths)! >= 0 && Int(covid.deaths)! < 201{
-                    Text(" Deaths:\(covid.deaths)").foregroundColor(.green)
+                    Text(" Deaths:\(covid.deaths )").foregroundColor(.orange)
+                } else if Int(covid.deaths)! >= 0 && Int(covid.deaths)! < 201 {
+                    Text(" Deaths:\(covid.deaths )").foregroundColor(.green)
                 } else {
                     Text(" Deaths:\(covid.deaths)")
-                }
+                    }
                 }.navigationBarTitle("Covid-19 Cases")
             }
         }
         .onAppear(perform: loadData)
     }
     
-    
-
     func loadData() {
         guard let url = URL(string: "https://opendata.ecdc.europa.eu/covid19/casedistribution/json/") else {
                 print("Invaid URL")
@@ -93,12 +91,6 @@ struct ContentView: View {
                 }
             }
         }.resume()
-    }
-}
-
-struct listHeader: View {
-    var body: some View {
-        Text("Chosen Country")
     }
 }
 
