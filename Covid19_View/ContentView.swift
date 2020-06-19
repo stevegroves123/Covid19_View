@@ -24,19 +24,19 @@ struct ContentView: View {
                 }
             List (records.filter({covid in covid.countriesAndTerritories == self.countries[self.selectedCountry]}), id: \.id) {covid in
                 Text("\(covid.day)/\(covid.month)")
-                Text("Cases:\(covid.cases ?? "0")")
-                if Int(covid.deaths)! > 1000 {
-                    Text("Deaths:\(covid.deaths )").foregroundColor(.red)
-                } else if Int(covid.deaths)! >= 500 && Int(covid.deaths)! < 1000 {
-                    Text("Deaths:\(covid.deaths )").foregroundColor(.orange)
-                } else if Int(covid.deaths)! >= 0 && Int(covid.deaths)! < 201 {
-                    Text("Deaths:\(covid.deaths )").foregroundColor(.green)
+                Text("Cases:\(covid.cases)")
+                
+                if covid.deaths > 1000 {
+                    Text("Deaths:\(covid.deaths)").foregroundColor(.red)
+                } else if covid.deaths >= 500 && covid.deaths < 1000 {
+                    Text("Deaths:\(covid.deaths)").foregroundColor(.orange)
+                } else if covid.deaths >= 0 && covid.deaths < 201 {
+                    Text("Deaths:\(covid.deaths)").foregroundColor(.green)
                 } else {
                     Text("Deaths:\(covid.deaths)")
                     }
-                Text("Sum:\(Int(covid.cases ?? "0")! + Int(covid.deaths)!)")
                 }
-            }.navigationBarTitle("Covid19: \(self.countries[self.selectedCountry].replacingOccurrences(of: "_", with: " "))")
+            }.navigationBarTitle("\(self.countries[self.selectedCountry].replacingOccurrences(of: "_", with: " "))")
                 .font(.system(size: 16))
         }
         .onAppear(perform: loadData)

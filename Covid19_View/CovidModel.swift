@@ -20,12 +20,12 @@ struct Record: Codable, Identifiable {
     let day: String
     let month: String
     let year: String
-    let cases: String?
-    let deaths: String
+    let cases: Int
+    let deaths: Int
     let countriesAndTerritories: String
     let geoId: String
     let countryterritoryCode: String
-    let popData2018: String
+    let popData2019: String
     let continentExp: String
 
     enum CodingKeys: String, CodingKey {
@@ -38,7 +38,25 @@ struct Record: Codable, Identifiable {
         case countriesAndTerritories
         case geoId
         case countryterritoryCode
-        case popData2018
+        case popData2019
         case continentExp
      }
 }
+
+/*
+ https://opendata.ecdc.europa.eu/covid19/casedistribution/json/
+ 
+ {
+    "dateRep" : "19/06/2020",
+    "day" : "19",
+    "month" : "06",
+    "year" : "2020",
+    "cases" : 658,
+    "deaths" : 42,
+    "countriesAndTerritories" : "Afghanistan",
+    "geoId" : "AF",
+    "countryterritoryCode" : "AFG",
+    "popData2019" : "38041757",
+    "continentExp" : "Asia"
+ },
+ */
