@@ -22,7 +22,7 @@ struct ContentView: View {
                             .font(.headline)
                     }
                 }
-            List (records.filter({covid in covid.countriesAndTerritories == self.countries[self.selectedCountry]}), id: \.id) {covid in
+                List (records.filter({covid in covid.countriesAndTerritories == self.countries[self.selectedCountry]}), id: \.id) {covid in
                 Text("\(covid.day)/\(covid.month)")
                 Text("Cases:\(covid.cases)")
                 
@@ -52,12 +52,12 @@ struct ContentView: View {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
-                print("Loaded data")
+                print("Data loaded")
                 if let decodedResponse = try? JSONDecoder().decode(CovidData.self, from: data) {
                     DispatchQueue.main.async {
                         self.records = decodedResponse.records
                     }
-                    print("yahooo")
+                    print("yahooo it works")
                     return
                 }
                 print("ok - this is not working")
