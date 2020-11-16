@@ -52,13 +52,17 @@ struct ContentView: View {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
+                print("Loaded data")
                 if let decodedResponse = try? JSONDecoder().decode(CovidData.self, from: data) {
                     DispatchQueue.main.async {
                         self.records = decodedResponse.records
                     }
+                    print("yahooo")
                     return
                 }
+                print("ok - this is not working")
             }
+            print("FETCH failed \(error?.localizedDescription ?? "error unknown")")
         }.resume()
     }
 }
